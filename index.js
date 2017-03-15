@@ -21,7 +21,7 @@ module.exports.point = function(count, bbox) {
 
 module.exports.pointStream = function(count, bbox) {
   return from.obj(function(size, next) {
-    if (--count) {
+    if (count--) {
       next(null, feature(bbox ? point(position(bbox)) : point()));
     } else {
       next(null, null);

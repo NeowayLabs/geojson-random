@@ -2,11 +2,21 @@
 
 var count = (process.argv[2] && parseInt(process.argv[2], 10)) || 100;
 var type = process.argv[3] || 'point';
+var bboxValues = process.argv[4] || null;
 var geojsonStream = require('geojson-stream');
 var geojsonRandom = require('./');
+var bbox = [];
+
+if (bboxValues != null) {
+    var bboxEntries = bboxValues.split(",");
+
+    for (var i = 0; i < bboxEntries.length; i++) {
+        bbox.push(parseInt(bboxEntries[i], 10));
+    }
+}
 
 if (type === 'point-stream') {
-  geojsonRandom.pointStream(count)
+    geojsonRandom.pointStream(count, bbox.length > 0 ? bbox : undefined)
     .pipe(geojsonStream.stringify())
     .pipe(process.stdout);
 } else {
